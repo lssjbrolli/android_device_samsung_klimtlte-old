@@ -1,0 +1,127 @@
+# Audio
+vendor/firmware/srp_cga.bin
+vendor/firmware/srp_data.bin
+vendor/firmware/srp_vliw.bin
+
+# Bluetooth
+vendor/firmware/bcm4350_A0.hcd
+vendor/firmware/bcm4350.hcd
+vendor/firmware/bcm4350_murata.hcd
+vendor/firmware/bcm4350_semco.hcd
+vendor/firmware/BT_FW_VER_BCM4354_003.001.012.0197.0321_Klint_LTE_ORC.hcd
+
+# OemCrypto
+##vendor/lib/liboemcrypto.so
+
+# Camera
+#lib/libarcsoft_flawlessface2.so
+#lib/libarcsoft_night_shot_ex.so
+#lib/libarcsoft_panorama_burstcapture.so
+#lib/libarcsoft_picaction.so
+#lib/libarcsoft_sensorndk.so
+#lib/libarcsoft_vdoinvideo.so
+##lib/libexynoscamera.so
+##lib/libsecnativefeature.so
+##lib/libliveframework.so
+##lib/libarcsoft_nighthawk.so
+##lib/libvdis.so
+
+# DRM
+##lib/libdrmdecrypt.so
+##lib/libstagefright_hdcp.so
+##vendor/lib/libwvdrm_L1.so
+##lib/libWVphoneAPI.so
+##vendor/lib/drm/libdrmwvmplugin.so
+##vendor/lib/mediadrm/libwvdrmengine.so
+##etc/ExynosOMXReg.conf
+
+# Graphics
+vendor/lib/egl/libGLES_mali.so
+vendor/lib/libmalicore.bc
+#vendor/lib/libRSDriverArm.so
+
+# GPS
+##bin/gpsd
+##lib/hw/gps.default.so
+##lib/libwrappergps.so
+
+# HWC
+##lib/libhwcutils.so
+##lib/libmpp.so
+##lib/libdisplay.so
+##lib/libhdmi.so
+##lib/libhwcutilsmodule.so
+##lib/libdisplaymodule.so
+##lib/libhdmimodule.so
+##lib/libvirtualdisplay.so
+##lib/libvirtualdisplaymodule.so
+
+# LPM
+##bin/lpm
+##lib/libQmageDecoder.so
+
+# Media
+vendor/firmware/fimc_is_fw2_IMX134_EEPROM.bin
+vendor/firmware/mfc_fw.bin
+vendor/firmware/setfile_6b2_eeprom.bin
+vendor/firmware/setfile_imx134_eeprom.bin
+vendor/firmware/mfc_fw.bin
+#vendor/media/LMspeed_508.emd
+#vendor/media/PFFprec_600.emd
+
+# Mobicore
+app/FFFFFFFF000000000000000000000001.drbin
+app/mcRegistry/00060308060501020000000000000000.tlbin
+app/mcRegistry/02010000080300030000000000000000.tlbin
+app/mcRegistry/07010000000000000000000000000000.tlbin
+app/mcRegistry/07060000000000000000000000000000.tlbin
+app/mcRegistry/ffffffff000000000000000000000003.tlbin
+app/mcRegistry/ffffffff000000000000000000000004.tlbin
+app/mcRegistry/ffffffff000000000000000000000005.tlbin
+app/mcRegistry/ffffffff000000000000000000000007.tlbin
+app/mcRegistry/ffffffff000000000000000000000008.tlbin
+app/mcRegistry/ffffffff000000000000000000000009.tlbin
+app/mcRegistry/ffffffff00000000000000000000000a.tlbin
+app/mcRegistry/ffffffff00000000000000000000000b.tlbin
+app/mcRegistry/ffffffff00000000000000000000000f.tlbin
+app/mcRegistry/ffffffff000000000000000000000010.tlbin
+app/mcRegistry/ffffffff000000000000000000000011.tlbin
+app/mcRegistry/ffffffff000000000000000000000018.tlbin
+app/mcRegistry/ffffffffd00000000000000000000004.tlbin
+app/mcRegistry/ffffffffd0000000000000000000000a.tlbin
+app/mcRegistry/ffffffffd0000000000000000000000e.tlbin
+#bin/scranton_RD
+
+# Power
+#vendor/lib/hw/power.exynos5.so
+
+# Sensors
+lib/hw/sensors.universal5420.so
+lib/libak09911c.so
+##lib/libgnustl_shared.so
+##lib/libarcsoft_sensorndk.so
+
+# Widevine
+#vendor/lib/libwvm.so
+#vendor/lib/libWVStreamControlAPI_L1.so
+
+# Wi-Fi
+etc/wifi/bcmdhd_apsta.bin
+etc/wifi/bcmdhd_ibss.bin
+etc/wifi/bcmdhd_mfg.bin
+etc/wifi/bcmdhd_sta.bin
+etc/wifi/cred.conf
+etc/wifi/nvram_mfg.txt
+etc/wifi/nvram_mfg.txt:etc/wifi/nvram_mfg.txt_murata
+etc/wifi/nvram_net.txt
+etc/wifi/nvram_net.txt:etc/wifi/nvram_net.txt_murata
+
+# Input
+#usr/idc/Synaptics_HID_TouchPad.idc
+#usr/keylayout/gpio-keys.kl
+
+# some need dep..
+#vendor/lib/liblvverx_3.20.03.so
+#vendor/lib/liblvvetx_3.20.03.so
+#bin/secure_storage_daemon
+#bin/bintvoutservice

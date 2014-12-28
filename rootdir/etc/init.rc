@@ -25,7 +25,7 @@ on early-init
 # create mountpoints
     mkdir /mnt 0775 root system
 
-# Allow system UID to setenforce and set booleans.
+    # Allow system UID to setenforce and set booleans.
     chown system system /selinux/enforce
     chown system system /sys/fs/selinux/enforce
     chown -R system system /selinux/booleans
@@ -71,7 +71,7 @@ loglevel 3
     mkdir /config 0500 root root
 
     # See storage config details at http://source.android.com/tech/storage/
-    mkdir /mnt/shell 0750 shell shell
+    mkdir /mnt/shell 0700 shell shell
     mkdir /mnt/media_rw 0700 media_rw media_rw
     mkdir /storage 0751 root sdcard_r
 
@@ -155,13 +155,13 @@ loglevel 3
     mount pstore pstore /sys/fs/pstore
     chown system log /sys/fs/pstore/console-ramoops
     chmod 0440 /sys/fs/pstore/console-ramoops
-    
+
 on post-fs
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount
     # mount shared so changes propagate into child namespaces
     mount rootfs rootfs / shared rec
-    
+
     # We chown/chmod /cache again so because mount is run as root + defaults
     chown system cache /cache
     chmod 0771 /cache
@@ -231,7 +231,12 @@ on post-fs-data
     mkdir /data/misc/zoneinfo 0775 system system
     mkdir /data/misc/vpn 0770 system vpn
     mkdir /data/misc/systemkeys 0700 system system
-    mkdir /data/misc/jack 0770 jack system
+    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
+    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    # give system access to wpa_supplicant.conf for backup and restore
+    chmod 0660 /data/misc/wifi/wpa_supplicant.conf
     mkdir /data/local 0751 root root
     mkdir /data/misc/media 0700 media media
 
@@ -404,8 +409,12 @@ on boot
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/cpu_util
 
     # Assume SMP uses shared cpufreq policy for all CPUs
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 
     chown system system /sys/class/timed_output/vibrator/enable
     chown system system /sys/class/leds/keyboard-backlight/brightness
@@ -558,13 +567,7 @@ service console /system/bin/sh
     disabled
     user shell
     group log
-
-## WTL_EDM_START
-## EDM AuditLog
-#service edmaudit /system/bin/edmaudit
-#	class main
-#	user root
-## WTL_EDM_END
+    seclabel u:r:shell:s0
 
 service auditd /system/bin/auditd -k
     class main
@@ -648,7 +651,6 @@ service surfaceflinger /system/bin/surfaceflinger
     user system
     group graphics drmrpc
     onrestart restart zygote
-    onrestart restart gsiff_daemon
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class main
@@ -664,12 +666,7 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
 service drm /system/bin/drmserver
     class main
     user drm
-# [ SEC_MM_DRM
-# fix
-    group system drm inet drmrpc sdcard_r sdcard_rw media_rw radio shell
-# org
-#    group drm system inet drmrpc
-# ]
+    group drm system inet drmrpc
 
 service media /system/bin/mediaserver
     class main
@@ -690,7 +687,7 @@ service media /system/bin/mediaserver
 service bootanim /system/bin/bootanimation
     class main
     user graphics
-    group graphics system
+    group graphics
     disabled
     oneshot
 
@@ -698,10 +695,14 @@ service installd /system/bin/installd
     class main
     socket installd stream 600 system system
 
-#service flash_recovery /system/etc/install-recovery.sh
-#    class main
-#    seclabel u:r:flash_recovery:s0
-#    oneshot
+service flash_recovery /system/etc/install-cm-recovery.sh
+    class main
+    disabled
+    oneshot
+
+# update recovery if enabled
+on property:persist.sys.recovery_update=true
+    start flash_recovery
 
 service racoon /system/bin/racoon
     class main

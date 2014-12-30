@@ -67,7 +67,12 @@ TARGET_SCREEN_WIDTH := 1600
 # Camera
 PRODUCT_PACKAGES += \
     camera.universal5420 \
+    libexynoscamera \
     libhwjpeg
+    
+# Torch
+PRODUCT_PACKAGES += \
+    Torch
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \

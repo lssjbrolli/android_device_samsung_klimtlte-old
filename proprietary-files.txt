@@ -89,6 +89,8 @@ app/mcRegistry/ffffffffd0000000000000000000000e.tlbin
 # Sensors
 lib/hw/sensors.universal5420.so
 lib/libak09911c.so
+etc/PARAM.ini
+etc/PDC.ini
 ##lib/libgnustl_shared.so
 ##lib/libarcsoft_sensorndk.so
 

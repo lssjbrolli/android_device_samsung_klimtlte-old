@@ -29,12 +29,12 @@ vendor/firmware/BT_FW_VER_BCM4354_003.001.012.0197.0321_Klint_LTE_ORC.hcd
 # Graphics
 vendor/lib/egl/libGLES_mali.so
 vendor/lib/libmalicore.bc
-vendor/lib/libRSDriverArm.so
+#vendor/lib/libRSDriverArm.so
 
 # GPS
-##bin/gpsd
-##lib/hw/gps.default.so
-##lib/libwrappergps.so
+bin/gpsd
+lib/hw/gps.default.so
+#lib/libwrappergps.so
 
 # HWC
 ##lib/libhwcutils.so
@@ -87,7 +87,7 @@ app/mcRegistry/ffffffffd0000000000000000000000e.tlbin
 #vendor/lib/hw/power.exynos5.so
 
 # Sensors
-lib/hw/sensors.universal5420.so
+#lib/hw/sensors.universal5420.so
 lib/libak09911c.so
 etc/PARAM.ini
 etc/PDC.ini
@@ -95,7 +95,7 @@ etc/PDC.ini
 ##lib/libarcsoft_sensorndk.so
 
 # Widevine
-vendor/lib/libwvm.so
+#vendor/lib/libwvm.so
 #vendor/lib/libWVStreamControlAPI_L1.so
 
 # Wi-Fi
@@ -110,8 +110,8 @@ etc/wifi/nvram_net.txt
 etc/wifi/nvram_net.txt:etc/wifi/nvram_net.txt_murata
 
 # DRM
-lib/libdrmdecrypt.so:vendor/lib/libdrmdecrypt.so
-lib/libstagefright_hdcp.so:vendor/lib/libstagefright_hdcp.so
+#lib/libdrmdecrypt.so:vendor/lib/libdrmdecrypt.so
+#lib/libstagefright_hdcp.so:vendor/lib/libstagefright_hdcp.so
 ##vendor/lib/libwvdrm_L1.so
 ##lib/libWVphoneAPI.so
 ##vendor/lib/drm/libdrmwvmplugin.so

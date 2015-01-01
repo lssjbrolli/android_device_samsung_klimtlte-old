@@ -29,15 +29,17 @@ PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 RODUCT_BUILD_PROP_OVERRIDES += \
     ro.secure=0 \
     ro.adb.secure=0
+    
+# CPU producer to CPU consumer not supported 
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.bq.gpu_to_cpu_unsupported=1
 
 # Audio
 PRODUCT_PACKAGES += \
     audio.primary.universal5420 \
     audio.a2dp.default \
     audio.usb.default \
-    audio.r_submix.default \
-    mixer_paths.xml \
-    tinymix
+    audio.r_submix.default 
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
@@ -82,10 +84,13 @@ PRODUCT_PACKAGES += \
 
 # GPS
 PRODUCT_PACKAGES += \
-    gps.universal5420
+    gps.default \
+    gpsd
+    
+$(call inherit-product, device/common/gps/gps_eu_supl.mk)
     
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/gps.conf:system/etc/gps.conf
+    $(LOCAL_PATH)/configs/gps.xml:system/etc/gps.xml
 
 # HW composer
 PRODUCT_PACKAGES += \

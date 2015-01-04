@@ -31,7 +31,7 @@ RODUCT_BUILD_PROP_OVERRIDES += \
     ro.adb.secure=0
     
 # CPU producer to CPU consumer not supported 
-PRODUCT_PROPERTY_OVERRIDES += \
+#PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1
 
 # Audio
@@ -39,9 +39,10 @@ PRODUCT_PACKAGES += \
     audio.primary.universal5420 \
     audio.a2dp.default \
     audio.usb.default \
-    audio.r_submix.default 
+    audio.r_submix.default \
+    mixer_paths.xml
 
-PRODUCT_COPY_FILES += \
+#PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
     $(LOCAL_PATH)/configs/audio_effects.conf:system/etc/audio_effects.conf
 
@@ -59,12 +60,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/system/bin/wlandutservice:system/bin/wlandutservice  
     
 # init.wifi.rc
-PRODUCT_COPY_FILES += \
+#PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/init.wifi.rc:root/init.wifi.rc
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 2560
 TARGET_SCREEN_WIDTH := 1600
+PRODUCT_COPY_FILES += \
+        vendor/cm/prebuilt/common/bootanimation/1600.zip:system/media/bootanimation.zip
     
 # Camera
 PRODUCT_PACKAGES += \
@@ -83,7 +86,7 @@ PRODUCT_PACKAGES += \
     setup_fs
 
 # GPS
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     gps.default \
     gpsd
     
@@ -104,14 +107,15 @@ PRODUCT_PACKAGES += \
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/sec_touchscreen.kl:system/usr/keylayout/sec_touchscreen.kl
+    $(LOCAL_PATH)/configs/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl \
+    $(LOCAL_PATH)/configs/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl
 
 # Keystore
 PRODUCT_PACKAGES += \
     keystore.exynos5
 
 # Lights
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     lights.universal5420
 
 # Media profile
@@ -174,7 +178,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml 
 
 # Power
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     power.universal5420
 
 # Ramdisk
@@ -183,12 +187,14 @@ PRODUCT_PACKAGES += \
     init.universal5420.rc \
     init.universal5420.usb.rc \
     init.universal5420.wifi.rc \
-    ueventd.universal5420.rc
+    ueventd.universal5420.rc 
 
 # Radio (needed for audio controls even on wifi-only)
 PRODUCT_PACKAGES += \
     libsecril-client \
-    libsecril-client-sap
+    libsecril-client-sap \
+    libril \
+    rild
 
 # Recovery
 PRODUCT_PACKAGES += \

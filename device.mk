@@ -58,10 +58,6 @@ PRODUCT_PACKAGES += \
     $(LOCAL_PATH)/rootdir/system/bin/mfgloader:system/bin/mfgloader \
     $(LOCAL_PATH)/rootdir/system/bin/olsrd:system/bin/olsrd \
     $(LOCAL_PATH)/rootdir/system/bin/wlandutservice:system/bin/wlandutservice  
-    
-# init.wifi.rc
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/etc/init.wifi.rc:root/init.wifi.rc
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 2560
@@ -84,11 +80,6 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     e2fsck \
     setup_fs
-
-# GPS
-#PRODUCT_PACKAGES += \
-    gps.default \
-    gpsd
     
 $(call inherit-product, device/common/gps/gps_eu_supl.mk)
     
@@ -113,10 +104,6 @@ PRODUCT_COPY_FILES += \
 # Keystore
 PRODUCT_PACKAGES += \
     keystore.exynos5
-
-# Lights
-#PRODUCT_PACKAGES += \
-    lights.universal5420
 
 # Media profile
 PRODUCT_COPY_FILES += \
@@ -177,13 +164,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml 
 
-# Power
-#PRODUCT_PACKAGES += \
-    power.universal5420
-
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.universal5420 \
+    init.rc \
     init.universal5420.rc \
     init.universal5420.usb.rc \
     init.universal5420.wifi.rc \

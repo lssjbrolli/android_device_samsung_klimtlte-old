@@ -8,7 +8,6 @@ import /init.environ.rc
 import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.trace.rc
-import /init.container.rc
 
 on early-init
 
@@ -363,6 +362,9 @@ on post-fs-data
     # Restorecon for backup data file
     mkdir /data/backup 0700 system system
     restorecon /data/backup
+    
+    # Include extra init file
+    import /init.cm.rc   
     
 on boot
     

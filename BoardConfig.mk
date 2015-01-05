@@ -62,8 +62,8 @@ COMMON_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
 # Kernel
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
-TARGET_KERNEL_CONFIG := klimtwifi_00_defconfig
-TARGET_KERNEL_SOURCE := kernel/samsung/kern
+TARGET_KERNEL_CONFIG := klimtlte_00_defconfig
+TARGET_KERNEL_SOURCE := kernel/samsung/klimt_kern
 #TARGET_PREBUILT_KERNEL := device/samsung/klimtlte/kernel
 BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive
 

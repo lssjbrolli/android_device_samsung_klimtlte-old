@@ -42,7 +42,7 @@ PRODUCT_PACKAGES += \
     audio.r_submix.default \
     mixer_paths.xml
 
-#PRODUCT_COPY_FILES += \
+PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
     $(LOCAL_PATH)/configs/audio_effects.conf:system/etc/audio_effects.conf
 
@@ -171,7 +171,8 @@ PRODUCT_PACKAGES += \
     init.universal5420.rc \
     init.universal5420.usb.rc \
     init.universal5420.wifi.rc \
-    ueventd.universal5420.rc 
+    ueventd.universal5420.rc \
+    cbd
 
 # Radio (needed for audio controls even on wifi-only)
 PRODUCT_PACKAGES += \

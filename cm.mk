@@ -1,14 +1,18 @@
 # Boot animation
-#TARGET_SCREEN_HEIGHT := 2560
-#TARGET_SCREEN_WIDTH := 1600
+TARGET_SCREEN_HEIGHT := 2560
+TARGET_SCREEN_WIDTH := 1600
 
-$(call inherit-product, device/samsung/klimtlte/full_klimtlte.mk)
-
-## Specify phone tech before including full_phone
+# Specify phone tech before including full_phone
 $(call inherit-product, vendor/cm/config/gsm.mk)
 
 # Inherit some common CM stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+$(call inherit-product, vendor/cm/config/common_full_tablet_wifionly.mk)
+
+# Inherit telephony stuff
+$(call inherit-product, vendor/cm/config/telephony.mk)
+
+# Inherit device configuration
+$(call inherit-product, device/samsung/klimtlte/full_klimtlte.mk)
 
 PRODUCT_NAME := cm_klimtlte
 PRODUCT_DEVICE := klimtlte

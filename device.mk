@@ -178,8 +178,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libsecril-client \
     libsecril-client-sap \
-    libril \
-    rild
 
 # Recovery
 PRODUCT_PACKAGES += \

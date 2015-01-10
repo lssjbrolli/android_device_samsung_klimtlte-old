@@ -365,6 +365,9 @@ on boot
     chown system radio /sys/class/sec/sec_barcode_emul/barcode_ver_check
     chown system radio /sys/class/sec/sec_barcode_emul/barcode_led_status
 
+    # Prevents permission denied error for telephony
+    chmod 0644 /proc/cmdline
+    
 on fs
 
     # Support Preload install apks

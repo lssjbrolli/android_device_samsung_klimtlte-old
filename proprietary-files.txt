@@ -16,7 +16,7 @@ vendor/firmware/bcm4350_semco.hcd
 vendor/firmware/BT_FW_VER_BCM4354_003.001.012.0197.0321_Klint_LTE_ORC.hcd
 
 # OemCrypto
-##vendor/lib/liboemcrypto.so
+vendor/lib/liboemcrypto.so
 
 # Camera
 lib/hw/camera.universal5420.so:lib/hw/camera.vendor.universal5420.so
@@ -96,7 +96,11 @@ etc/wifi/nvram_net.txt:etc/wifi/nvram_net.txt_murata
 # Lights
 vendor/lib/hw/lights.exynos5.so
 
-#Bins
+# Bins
 bin/prepare_param.sh
 etc/init.sec.boot.sh:bin/init.sec.boot.sh
 bin/immvibed
+
+# Ril
+bin/rild
+lib/libril.so

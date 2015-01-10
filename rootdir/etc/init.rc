@@ -32,7 +32,10 @@ on init
 
     sysclktz 0
 
-    loglevel 3
+    loglevel 7
+    
+    setprop ro.radio.noril no
+    setprop hw.nophone false
     
     # for audit message
     chown system system /proc/avc_msg
@@ -69,16 +72,13 @@ on init
     chown root system /sys/fs/cgroup/memory/sw/tasks
     chmod 0660 /sys/fs/cgroup/memory/sw/tasks
 
-    mkdir /.system
     mkdir /system
     mkdir /data 0771 system system
-    mkdir /cache 0770 system cache
+    mkdir /cache 0771 system cache
     mkdir /config 0500 root root
 
     # See storage config details at http://source.android.com/tech/storage/
-    # [ SEC_MM_DRM
-    mkdir /mnt/shell 0750 shell shell
-    # ]
+    mkdir /mnt/shell 0700 shell shell
     mkdir /mnt/media_rw 0700 media_rw media_rw
     mkdir /storage 0751 root sdcard_r
 
@@ -173,7 +173,7 @@ on post-fs
 
     # We chown/chmod /cache again so because mount is run as root + defaults
     chown system cache /cache
-    chmod 0770 /cache
+    chmod 0771 /cache
     # We restorecon /cache in case the cache partition has been reset.
     restorecon /cache
 
@@ -235,13 +235,13 @@ on post-fs-data
 
     # create basic filesystem structure
     mkdir /data/misc 01771 system misc
-    mkdir /data/misc/audit 02775 audit system
     mkdir /data/misc/adb 02750 system shell
+    mkdir /data/misc/audit 02750 audit system
     mkdir /data/misc/bluedroid 0770 bluetooth net_bt_stack
     mkdir /data/misc/bluetooth 0770 system system
     mkdir /data/misc/keystore 0700 keystore keystore
     mkdir /data/misc/keychain 0771 system system
-    mkdir /data/misc/radio 0771 system radio
+    mkdir /data/misc/radio 0770 system radio
     mkdir /data/misc/sms 0770 system radio
     mkdir /data/misc/zoneinfo 0775 system system
     mkdir /data/misc/vpn 0770 system vpn
@@ -265,18 +265,10 @@ on post-fs-data
     mkdir /data/system/container 0700 system system
     restorecon -R /data/system
 
-    # SA, System SW, SAMSUNG create log directory
-    mkdir /data/log 0775 system log
-    chown system log /data/log
-    mkdir /data/anr 0775 system system
-    chown system system /data/anr
-    chmod 0775 /data/log
-    chmod 0775 /data/anr
-    restorecon /data/log
-    restorecon /data/anr
-
-    # create dalvik-cache, so as to enforce our permissions
+    # create dalvik-cache and double-check the perms, so as to enforce our permissions
     mkdir /data/dalvik-cache 0771 system system
+    chown system system /data/dalvik-cache
+    chmod 0771 /data/dalvik-cache
 
     # create resource-cache and double-check the perms
     mkdir /data/resource-cache 0771 system system
@@ -493,8 +485,6 @@ on boot
     chown system system /sys/kernel/ipv4/tcp_rmem_min
     chown system system /sys/kernel/ipv4/tcp_rmem_def
     chown system system /sys/kernel/ipv4/tcp_rmem_max
-    chown system system /sys/kernel/ipv4/tcp_delack_seg
-    chown system system /sys/kernel/ipv4/tcp_use_userconfig
     chown root radio /proc/cmdline
 
     # mobicore
@@ -552,9 +542,11 @@ on boot
     setprop net.tcp.buffersize.hsupa   4094,87380,704512,4096,16384,262144
     setprop net.tcp.buffersize.hsdpa   4094,87380,704512,4096,16384,262144
     setprop net.tcp.buffersize.hspap   4094,87380,1220608,4096,16384,1220608
+    setprop net.tcp.buffersize.dchspap 4094,87380,1220608,4096,16384,1220608
     setprop net.tcp.buffersize.edge    4093,26280,35040,4096,16384,35040
     setprop net.tcp.buffersize.gprs    4092,30000,30000,4096,8760,11680
     setprop net.tcp.buffersize.evdo    4094,87380,262144,4096,16384,262144
+    setprop net.tcp.buffersize.evdo_b  4096,87380,704512,4096,16384,262144
 
     # Assign TCP buffer thresholds to be ceiling value of technology maximums
     # Increased technology maximums should be reflected here.
@@ -621,8 +613,11 @@ on property:sys.powerctl=*
 
 # system server cannot write to /proc/sys files, so proxy it through init
 on property:sys.sysctl.extra_free_kbytes=*
-
     write /proc/sys/vm/extra_free_kbytes ${sys.sysctl.extra_free_kbytes}
+# "tcp_default_init_rwnd" Is too long!
+on property:sys.sysctl.tcp_def_init_rwnd=*
+    write /proc/sys/net/ipv4/tcp_default_init_rwnd ${sys.sysctl.tcp_def_init_rwnd}
+
 
 ## Daemon processes to be run by init.
 service ueventd /sbin/ueventd
@@ -650,12 +645,10 @@ service console /system/bin/sh
     disabled
     user shell
     group log
+    seclabel u:r:shell:s0
 
 service auditd /system/bin/auditd -k
     class main
-    seclabel u:r:auditd:s0
-    disabled
-    oneshot
 
 on property:ro.debuggable=1
 
@@ -678,15 +671,12 @@ service servicemanager /system/bin/servicemanager
     onrestart restart media
     onrestart restart surfaceflinger
     onrestart restart drm
-    onrestart restart sensorhubservice
-    onrestart restart TvoutService_C
+    onrestart restart sensorservice
 
 service vold /system/bin/vold
     class core
     socket vold stream 0660 root mount
     ioprio be 2
-    socket dir_enc_report stream 0660 root mount
-    socket epm stream 0660 system system
 
 service netd /system/bin/netd
     class main
@@ -718,7 +708,6 @@ service surfaceflinger /system/bin/surfaceflinger
     user system
     group graphics drmrpc
     onrestart restart zygote
-    onrestart restart gsiff_daemon
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class main
@@ -728,8 +717,6 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
     onrestart restart media
     onrestart restart netd
     onrestart restart sensorservice
-    onrestart restart bootchecker
-    onrestart restart gsiff_daemon
 
 service sec-sh /system/bin/sh /system/bin/init.sec.boot.sh
     class main
@@ -756,7 +743,7 @@ service media /system/bin/mediaserver
 service bootanim /system/bin/bootanimation
     class main
     user graphics
-    group graphics system
+    group graphics
     disabled
     oneshot
 
@@ -828,20 +815,6 @@ on property:init.svc.bootanim=stopped
     restorecon /data/media
     restorecon /data/media/obb
     start auditd
-    start freshsebool
-
-
-# SE Android sebool
-#service freshsebool /system/bin/freshsebool
-#    class main
-#    user root
-#    disabled
-#    oneshot
-    
-#service mobex-daemon /system/bin/npsmobex
-#    class main
-#    user system
-#    group system radio inet sdcard_r sdcard_rw media_rw shell
 
 # MobiCore startup
 service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF000000000000000000000001.drbin -r /system/app/mcRegistry/ffffffffd0000000000000000000000a.tlbin
@@ -853,31 +826,6 @@ service sensorservice /system/bin/sensorservice
     class main
     user system
     group input
-
-
-# WTL_EDM
-#service createsystemfile /system/bin/createsystemfile
-#    class main
-#    group system
-#    disabled
-#    oneshot
-
-# for RIL MFG (TestMode)
-#service DR-daemon /system/bin/ddexe
-#    class main
-#    user root
-#    group system radio inet net_raw
-
-#service SMD-daemon /system/bin/smdexe
-#    class main
-#    user root
-#    group system radio inet net_raw
-
-#service BCS-daemon /system/bin/connfwexe
-#    class main
-#    user root
-#    group system radio inet net_raw
-# end of RIL
 
 # for Bluetooth Tethering
 service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL

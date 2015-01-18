@@ -1,4 +1,4 @@
-# #
+# # #
 # Copyright (C) 2013 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ RODUCT_BUILD_PROP_OVERRIDES += \
     ro.adb.secure=0
     
 # CPU producer to CPU consumer not supported 
-#PRODUCT_PROPERTY_OVERRIDES += \
+PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1
 
 # Audio
@@ -40,24 +40,12 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.usb.default \
     audio.r_submix.default \
+    libtinyxml \
     mixer_paths.xml
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
     $(LOCAL_PATH)/configs/audio_effects.conf:system/etc/audio_effects.conf
-
-# sbin binaries
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/sbin/cbd:root/sbin/cbd \
-    $(LOCAL_PATH)/rootdir/sbin/emmc_quickverify:root/sbin/emmc_quickverify \
-    $(LOCAL_PATH)/rootdir/sbin/ffu:root/sbin/ffu \
-    $(LOCAL_PATH)/rootdir/sbin/sswap:root/sbin/sswap
-    
-# system/bin
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/system/bin/mfgloader:system/bin/mfgloader \
-    $(LOCAL_PATH)/rootdir/system/bin/olsrd:system/bin/olsrd \
-    $(LOCAL_PATH)/rootdir/system/bin/wlandutservice:system/bin/wlandutservice  
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 2560
@@ -81,10 +69,15 @@ PRODUCT_PACKAGES += \
     e2fsck \
     setup_fs
     
-$(call inherit-product, device/common/gps/gps_eu_supl.mk)
-    
+# GPS    
+$(call inherit-product, device/common/gps/gps_eu_supl.mk) 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps.xml:system/etc/gps.xml
+    
+# Display
+PRODUCT_PACKAGES += \
+    libExynosHWCService \
+    libfimg
 
 # HW composer
 PRODUCT_PACKAGES += \
@@ -162,7 +155,11 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
-    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml 
+    frameworks/native/data/etc/android.software.sip.xml:system/etc/permissions/android.software.sip.xml \
+    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
+    frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
+    frameworks/native/data/etc/com.nxp.mifare.xml:system/etc/permissions/com.nxp.mifare.xml \
+    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
 
 # Ramdisk
 PRODUCT_PACKAGES += \
@@ -178,6 +175,37 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libsecril-client \
     libsecril-client-sap \
+    cbd
+    
+# Samsung
+PRODUCT_PACKAGES += \
+    SamsungServiceMode \
+    libkeyutils \
+    libexifa \
+    libjpega 
+ 
+# ProfessionalAudio
+PRODUCT_PACKAGES += \
+    libjackshm \
+    libjackserver \
+    libjack \
+    androidshmservice \
+    jackd \
+    jack_dummy \
+    jack_alsa \
+    jack_goldfish \
+    jack_opensles \
+    jack_loopback \
+    jack_connect \
+    jack_disconnect \
+    jack_lsp \
+    jack_showtime \
+    jack_simple_client \
+    jack_transport \
+    libasound \
+    libglib-2.0 \
+    libgthread-2.0 \
+    libfluidsynth
 
 # Recovery
 PRODUCT_PACKAGES += \

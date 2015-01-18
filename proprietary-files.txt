@@ -2,11 +2,6 @@
 vendor/firmware/srp_cga.bin
 vendor/firmware/srp_data.bin
 vendor/firmware/srp_vliw.bin
-vendor/lib/liblvverx_3.20.03.so
-vendor/lib/liblvvetx_3.20.03.so
-lib/libmysound.so
-lib/libaudiosa.so
-lib/soundfx/libaudiosa_sec.so
 
 # Bluetooth
 vendor/firmware/bcm4350_A0.hcd
@@ -24,18 +19,22 @@ lib/libexynoscamera.so
 lib/libvdis.so
 lib/libliveframework.so
 lib/libarcsoft_nighthawk.so
+lib/libarcsoft_flawlessface2.so
+lib/libarcsoft_night_shot_ex.so
+lib/libarcsoft_panorama_burstcapture.so
+lib/libarcsoft_picaction.so
+lib/libarcsoft_sensorndk.so
+lib/libarcsoft_vdoinvideo.so
 
 # Graphics
 vendor/lib/egl/libGLES_mali.so
 vendor/lib/libmalicore.bc
-#vendor/lib/libRSDriverArm.so
+vendor/lib/libRSDriverArm.so
 
 # GPS
 bin/gpsd
 lib/hw/gps.default.so
 lib/libwrappergps.so
-lib/libsec-ril.so
-lib/libsecnativefeature.so
 bin/gps.cer
 
 # Media
@@ -101,6 +100,15 @@ bin/prepare_param.sh
 etc/init.sec.boot.sh:bin/init.sec.boot.sh
 bin/immvibed
 
-# Ril
+# Radio
 bin/rild
 lib/libril.so
+lib/libsecril-client.so
+lib/libaudio-ril.so
+lib/libsec-ril.so
+lib/libsecnativefeature.so
+bin/at_distributor
+bin/mlexe
+bin/ddexe
+bin/smdexe
+bin/connfwexe

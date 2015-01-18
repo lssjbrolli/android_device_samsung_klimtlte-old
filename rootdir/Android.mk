@@ -53,6 +53,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE		:= cbd
 LOCAL_MODULE_TAGS	:= optional eng
 LOCAL_MODULE_CLASS	:= ETC
-LOCAL_SRC_FILES		:= sbin/cbd
+LOCAL_SRC_FILES		:= etc/cbd
 LOCAL_MODULE_PATH	:= $(TARGET_ROOT_OUT)/sbin
 include $(BUILD_PREBUILT)

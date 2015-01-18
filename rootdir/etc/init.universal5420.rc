@@ -32,13 +32,12 @@ on init
     symlink /storage/emulated/legacy /sdcard
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
-    #symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-    #symlink /mnt/shell/container /storage/container
+    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
     symlink /storage/sdcard1 /extSdCard
     symlink /storage/sdcard1 /mnt/extSdCard
     symlink /storage/sdcard1 /external_sd
-    #symlink /storage/usbdisk /usbdisk
-    #symlink /storage/usbdisk /mnt/usbdisk
+    symlink /storage/usbdisk /usbdisk
+    symlink /storage/usbdisk /mnt/usbdisk
 
     # Modem stuff
     mkdir /efs 0771 radio system
@@ -94,10 +93,6 @@ on post-fs-data
     chmod 0600 /dev/btlock
     chown bluetooth bluetooth /dev/btlock
 
-    # Added for TZ Playready DRM Support
-    mkdir /efs/drm 0700 drm system
-    mkdir /efs/drm/playready 0775 drm system
-
     #Create directory for hostapd
     mkdir /data/hostapd 0770 system wifi
 
@@ -111,12 +106,13 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     class late_start
     disabled
     oneshot
+    
+# SEAndroid Restore context for efs files
+    restorecon_recursive /efs
 
 on boot
 
     mount debugfs /sys/kernel/debug /sys/kernel/debug
-    setprop ro.radio.noril yes
-    stop ril-daemon
 
     # Reduce reserved lowmem from ~48MB to ~12MB
     write /proc/sys/vm/lowmem_reserve_ratio "128 128"
@@ -376,6 +372,12 @@ on fs
     mount_all /fstab.universal5420
     setprop ro.crypto.fuse_sdcard true
 
+    chown radio system /efs
+    chmod 0771 /efs
+    chown radio radio /sys/devices/virtual/misc/multipdp/waketime
+    chmod 0660 /sys/devices/virtual/misc/umts_dm0/dm_state
+    chown radio system /sys/devices/virtual/misc/umts_dm0/dm_state
+    
     #For Absolute Persistence Partition 
     mkdir /persdata 0755 system system 
     mkdir /persdata/absolute 0750 system system 
@@ -417,6 +419,29 @@ on fs
     chown system radio /sys/class/audio/earjack/select_jack
     chown system radio /sys/class/audio/earjack/key_state
     chown system radio /sys/class/audio/earjack/state
+    
+    # Audio 2 MIC (Audience)
+    # global switch for voice processing effects
+    chown root audio /sys/class/2mic/es325/voice_processing
+    chmod 0660 /sys/class/2mic/es325/voice_processing
+    # voice processing chip sleep
+    chown root audio /sys/class/2mic/es325/sleep
+    chmod 0660 /sys/class/2mic/es325/sleep
+    # voice processing usecase preset
+    chown root audio /sys/class/2mic/es325/preset
+    chmod 0660 /sys/class/2mic/es325/preset
+    # voice processing noise suppression level
+    chown root audio /sys/class/2mic/es325/tx_ns_level
+    chmod 0660 /sys/class/2mic/es325/tx_ns_level
+    # voice processing AGC enable (TX)
+    chown root audio /sys/class/2mic/es325/tx_agc_enable
+    chmod 0660 /sys/class/2mic/es325/tx_agc_enable
+    # voice processing AEC enable
+    chown root audio /sys/class/2mic/es325/aec_enable
+    chmod 0660 /sys/class/2mic/es325/aec_enable
+    # voice processing VEQ
+    chown root audio /sys/class/2mic/es325/veq
+    chmod 0660 /sys/class/2mic/es325/veq
 
     # GPS
     chown root system /dev/ttySAC1
@@ -452,6 +477,9 @@ service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw
     class late_start
     disabled
 
+on property:ro.fuse_sdcard=true
+    start sdcard
+    
 # Set watchdog timer to 30 seconds and pet it every 10 seconds to get a 20 second margin
 service watchdogd /sbin/watchdogd 10 20
     class core
@@ -477,15 +505,6 @@ on property:ro.debug_level=0x4f4c
 on property:ro.debuggable=1
     write /sys/module/kgdboc/parameters/kgdboc ttyFIQ1
     write /sys/module/fiq_debugger/parameters/kgdb_enable 1
-    
-# SecEDS
-#service TvoutService_C /system/bin/bintvoutservice
-#     class main
-#     user system
-#     group graphics
-     
-#on property:ro.SecEDS.enable=false
-#    stop TvoutService_C
 
 # GPS
 service gpsd /system/bin/gpsd -c /system/etc/gps.xml
@@ -493,6 +512,18 @@ service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     user gps
     group system inet net_raw
     ioprio be 0
+    
+# AT Distributor for factory test
+service at_distributor /system/bin/at_distributor
+    class late_start
+    user root
+    group radio misc log
+
+# Modem Logging daemon
+service ML-daemon /system/bin/mlexe
+    class main
+    user root
+    group system radio inet net_raw
 
 # MobiCore startup
 service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF000000000000000000000001.drbin -r /system/app/mcRegistry/ffffffffd0000000000000000000000a.tlbin

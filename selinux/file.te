@@ -37,4 +37,3 @@ type functionfs, fs_type;
 type system_library_file, file_type;
 type firmware, file_type, data_file_type;
 type sysfs_lcd_writable, sysfs_type, mlstrustedobject;
-type mdns_socket, file_type;

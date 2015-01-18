@@ -34,6 +34,7 @@ type multipdp_device, dev_type;
 type otablk_device, dev_type;
 type paramblk_device, dev_type;
 type persdatablk_device, dev_type;
+type prop_device, dev_type;
 type psaux_device, dev_type;
 type pts_device, dev_type;
 type pvrsync_device, dev_type;

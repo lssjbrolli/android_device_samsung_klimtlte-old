@@ -15,7 +15,11 @@ ro.allow.mock.location=1
 ro.debuggable=1
 ro.adb.secure=0
 
+# Radio
+ro.telephony.ril_class=KlimtRIL
+ro.telephony.ril.v3=newDriverCall,newDialCode
 rild.libpath=/system/lib/libsec-ril.so
 rild.libargs=-d /dev/ttyS0
 ro.ril.hsxpa=1
 ro.ril.gprsclass=10
+keyguard.no_require_sim=true 

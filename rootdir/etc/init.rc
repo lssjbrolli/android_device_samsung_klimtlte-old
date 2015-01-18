@@ -18,33 +18,36 @@ on early-init
     # This should occur before anything else (e.g. ueventd) is started.
     setcon u:r:init:s0
 
+    # Set the security context of /adb_keys if present.
+    restorecon /adb_keys
+
     start ueventd
 
     # create mountpoints
     mkdir /mnt 0775 root system
 
     # Allow system UID to setenforce and set booleans.
+    chown system system /selinux/enforce
     chown system system /sys/fs/selinux/enforce
+    chown -R system system /selinux/booleans
     chown -R system system /sys/fs/selinux/booleans
+    chown system system /selinux/commit_pending_bools
     chown system system /sys/fs/selinux/commit_pending_bools
 
 on init
 
     sysclktz 0
 
-    loglevel 7
+    loglevel 3
     
     setprop ro.radio.noril no
     setprop hw.nophone false
+    setenforce 0
+    setprop ro.boot.selinux 0
     
     # for audit message
     chown system system /proc/avc_msg
     chmod 0660 /proc/avc_msg
-
-    # Vibetonz
-    export VIBE_PIPE_PATH /dev/pipes
-    mkdir /dev/pipes 0771 vibe vibe
-    restorecon /dev/pipes
 
     # Backward compatibility
     symlink /system/etc /etc
@@ -84,6 +87,7 @@ on init
 
     # Directory for putting things only root should see.
     mkdir /mnt/secure 0700 root root
+    
     # Create private mountpoint so we can MS_MOVE from staging
     mount tmpfs tmpfs /mnt/secure mode=0700,uid=0,gid=0
 
@@ -102,7 +106,11 @@ on init
     # Filesystem image public mount points.
     mkdir /mnt/obb 0700 root system
     mount tmpfs tmpfs /mnt/obb mode=0755,gid=1000
-
+    
+    # Fuse public mount points.
+    mkdir /mnt/fuse 0700 root system
+    mount tmpfs tmpfs /mnt/fuse mode=0775,gid=1000
+    
     write /proc/sys/kernel/panic_on_oops 1
     write /proc/sys/kernel/hung_task_timeout_secs 0
     write /proc/cpu/alignment 4
@@ -158,9 +166,6 @@ on init
     # checker programs.
     mkdir /dev/fscklogs 0770 root system
 
-    # To sync between sdcard & installd
-    setprop installd.sdcard_manipulate_done 0
-
 on post-fs
 
     # once everything is setup, no need to modify /
@@ -197,7 +202,6 @@ on post-fs
     chmod 0220 /proc/sysrq-trigger
     chown system log /proc/last_kmsg
     chmod 0440 /proc/last_kmsg
-    chown system log /proc/sec_log
 
     # create the lost+found directories, so as to enforce our permissions
     mkdir /cache/lost+found 0770 root root
@@ -246,7 +250,12 @@ on post-fs-data
     mkdir /data/misc/zoneinfo 0775 system system
     mkdir /data/misc/vpn 0770 system vpn
     mkdir /data/misc/systemkeys 0700 system system
-    mkdir /data/misc/jack 0770 jack system
+    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
+    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    # give system access to wpa_supplicant.conf for backup and restore
+    chmod 0660 /data/misc/wifi/wpa_supplicant.conf
     mkdir /data/local 0751 root root
     mkdir /data/misc/media 0700 media media
 
@@ -261,9 +270,7 @@ on post-fs-data
     mkdir /data/property 0700 root root
     mkdir /data/ssh 0750 root shell
     mkdir /data/ssh/empty 0700 root root
-    mkdir /data/system 0775 system system
-    mkdir /data/system/container 0700 system system
-    restorecon -R /data/system
+    mkdir /data/radio 0770 radio radio
 
     # create dalvik-cache and double-check the perms, so as to enforce our permissions
     mkdir /data/dalvik-cache 0771 system system
@@ -287,88 +294,26 @@ on post-fs-data
     # the following directory.
     mkdir /data/mediadrm 0770 mediadrm mediadrm
 
-    # [ SEC_MM_DRM
-    # sdrm
-    mkdir /efs/drm 0774 drm system
-    mkdir /efs/drm/sdrm 0774 drm system
-    mkdir /efs/drm/sdrm/data_agent 0774 drm system
-    restorecon /efs/drm
-    restorecon /efs/drm/sdrm
-    restorecon /efs/drm/data_agent
-
-    # DRM directory creation
-    mkdir /system/etc/security/.drm 0775
-    chown root root /system/etc/security/.drm
-    chmod 0775 /system/etc/security/.drm
-
-    # Added for Playready DRM Support
-    mkdir /data/data/.drm 0775
-    chown drm system /data/data/.drm
-    chmod 0775 /data/data/.drm
-    mkdir /data/data/.drm/.playready 0775
-    chown drm system /data/data/.drm/.playready
-    chmod 0775 /data/data/.drm/.playready
-
-    # Added drm folder to copy drm plugins
-    mkdir /system/lib/drm 0775
-    chown root root /system/lib/drm
-    chmod 0775 /system/lib/drm
-
-    # DivX DRM
-    mkdir /efs/.files 0775
-    mkdir /efs/.files/.dx1 0775
-    mkdir /efs/.files/.dm33 0775
-    mkdir /efs/.files/.mp301 0775
-    chown media system /efs/.files/.dx1
-    chown media system /efs/.files/.dm33
-    chown media system /efs/.files/.mp301
-    chmod 0775 /efs/.files/.dx1
-    chmod 0775 /efs/.files/.dm33
-    chmod 0775 /efs/.files/.mp301
-
-    restorecon -R /efs
-    #]
-
-    # MTP permission
-    chmod 0660 /dev/usb_mtp_gadget
-    chown system mtp /dev/usb_mtp_gadget
-    mkdir /dev/socket/mtp 0770 system mtp
-
     # symlink to bugreport storage location
     symlink /data/data/com.android.shell/files/bugreports /data/bugreports
 
-    # If there is no fs-post-data action in the init.<device>.rc file, you
-    # must uncomment this line, otherwise encrypted filesystems
-    # won't work.
-    # Set indication (checked by vold) that we have finished this action
-    #setprop vold.post_fs_data_done 1
-
     # Separate location for storing security policy files on data
     mkdir /data/security 0711 system system
-    mkdir /data/security/spota 0711 system system
-    mkdir /data/security/booleans 0711 system system
-    mkdir /data/security/good 0700 system system
-    mkdir /data/security/stig 0700 system system
-    mkdir /data/security/mycontainer 0700 system system
 
-    # Restorecon for backup data file
-    mkdir /data/backup 0700 system system
-    restorecon /data/backup
+    # Reload policy from /data/security if present.
+    setprop selinux.reload_policy 1
+
+    # Set SELinux security contexts on upgrade or policy update.
+    restorecon_recursive /data
     
     # Include extra init file
     import /init.cm.rc   
     
-on boot
-    
+on boot  
     # basic network init
-    setprop wifi.interface wlan0
     ifup lo
     hostname localhost
     domainname localdomain
-
-    # Vibetonz
-    chmod 0660 /dev/tspdrv
-    chown vibe vibe /dev/tspdrv
 
     # set RLIMIT_NICE to allow priorities from 19 to -20
     setrlimit 13 40 40
@@ -557,58 +502,41 @@ on boot
 
     copy /system/etc/battery_charging_temp.data /sys/class/power_supply/battery/batt_temp_table
 
+    # Define default initial receive window size in segments.
+    setprop net.tcp.default_init_rwnd 60
+
     class_start core
     class_start main
-
+    
 on nonencrypted
-
     class_start late_start
 
 on charger
-
     chmod 0664 /sys/class/power_supply/battery/batt_temp_table
     chown system radio /sys/class/power_supply/battery/batt_temp_table
     class_start charger
 
 on property:vold.decrypt=trigger_reset_main
-
     class_reset main
 
 on property:vold.decrypt=trigger_load_persist_props
-
     load_persist_props
 
 on property:vold.decrypt=trigger_post_fs_data
-
     trigger post-fs-data
 
 on property:vold.decrypt=trigger_restart_min_framework
-
     class_start main
 
 on property:vold.decrypt=trigger_restart_framework
-
     class_start main
     class_start late_start
 
 on property:vold.decrypt=trigger_shutdown_framework
-
     class_reset late_start
     class_reset main
 
-# Reload SE Android Policy for MDM
-on property:persist.security.mdm.policy=1
-
-    setprop selinux.reload_policy 1
-
-on property:selinux.reload_policy=1
-
-    chown system system /sys/fs/selinux/enforce
-    chown -R system system /sys/fs/selinux/booleans
-    chown system system /sys/fs/selinux/commit_pending_bools
-
 on property:sys.powerctl=*
-
     powerctl ${sys.powerctl}
 
 # system server cannot write to /proc/sys files, so proxy it through init
@@ -635,10 +563,6 @@ service healthd-charger /sbin/healthd -n
     critical
     seclabel u:r:healthd:s0
 
-#on property:selinux.reload_policy=1
-#    restart ueventd
-#    restart installd
-
 service console /system/bin/sh
     class core
     console
@@ -651,7 +575,6 @@ service auditd /system/bin/auditd -k
     class main
 
 on property:ro.debuggable=1
-
     start console
 
 # adbd is controlled via property triggers in init.<platform>.usb.rc
@@ -726,12 +649,8 @@ service sec-sh /system/bin/sh /system/bin/init.sec.boot.sh
 service drm /system/bin/drmserver
     class main
     user drm
-# [ SEC_MM_DRM
-# fix
     group system drm inet drmrpc sdcard_r sdcard_rw media_rw radio shell
-# org
-#    group drm system inet drmrpc
-# ]
+
 
 service media /system/bin/mediaserver
     class main
@@ -791,13 +710,6 @@ service bugreport /system/bin/dumpstate -d -p -B \
     oneshot
     keycodes 114 115 116
 
-# Vibetonz
-service immvibed /system/bin/immvibed
-    class core
-    user vibe
-    group vibe
-    oneshot
-
 service sshd /system/bin/start-ssh
     class main
     disabled
@@ -809,6 +721,23 @@ service mdnsd /system/bin/mdnsd
     socket mdnsd stream 0660 mdnsr inet
     disabled
     oneshot
+    
+# for RIL MFG (TestMode)
+service DR-daemon /system/bin/ddexe
+    class main
+    user root
+    group system radio inet net_raw
+
+service SMD-daemon /system/bin/smdexe
+    class main
+    user root
+    group system radio inet net_raw
+
+service BCS-daemon /system/bin/connfwexe
+    class main
+    user root
+    group system radio inet net_raw
+# end of RIL
 
 on property:init.svc.bootanim=stopped
 

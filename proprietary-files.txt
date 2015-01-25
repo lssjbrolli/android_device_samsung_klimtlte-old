@@ -92,9 +92,6 @@ etc/wifi/nvram_mfg.txt:etc/wifi/nvram_mfg.txt_murata
 etc/wifi/nvram_net.txt
 etc/wifi/nvram_net.txt:etc/wifi/nvram_net.txt_murata
 
-# Lights
-vendor/lib/hw/lights.exynos5.so
-
 # Bins
 bin/prepare_param.sh
 etc/init.sec.boot.sh:bin/init.sec.boot.sh

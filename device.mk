@@ -37,8 +37,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Audio
 PRODUCT_PACKAGES += \
     audio.primary.universal5420 \
-    libtinyxml \
-    mixer_paths.xml
+    audio.a2dp.default \
+    audio.usb.default \
+    audio.r_submix.default \
+    mixer_paths.xml \
+    tinymix
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
@@ -210,6 +213,10 @@ PRODUCT_PACKAGES += \
 # Sensors
 PRODUCT_PACKAGES += \
     sensors.universal5420
+    
+# Lights
+PRODUCT_PACKAGES += \
+    lights.universal5420
 
 # Wifi
 PRODUCT_COPY_FILES += \

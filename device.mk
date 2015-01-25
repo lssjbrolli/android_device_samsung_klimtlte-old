@@ -37,9 +37,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Audio
 PRODUCT_PACKAGES += \
     audio.primary.universal5420 \
-    audio.a2dp.default \
-    audio.usb.default \
-    audio.r_submix.default \
     libtinyxml \
     mixer_paths.xml
 
@@ -54,7 +51,7 @@ PRODUCT_COPY_FILES += \
         vendor/cm/prebuilt/common/bootanimation/1600.zip:system/media/bootanimation.zip
     
 # Camera
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     camera.universal5420 \
     libexynoscamera \
     libhwjpeg
@@ -168,8 +165,7 @@ PRODUCT_PACKAGES += \
     init.universal5420.rc \
     init.universal5420.usb.rc \
     init.universal5420.wifi.rc \
-    ueventd.universal5420.rc \
-    cbd
+    ueventd.universal5420.rc 
 
 # Radio (needed for audio controls even on wifi-only)
 PRODUCT_PACKAGES += \
@@ -178,14 +174,14 @@ PRODUCT_PACKAGES += \
     cbd
     
 # Samsung
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     SamsungServiceMode \
     libkeyutils \
     libexifa \
     libjpega 
  
 # ProfessionalAudio
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     libjackshm \
     libjackserver \
     libjack \

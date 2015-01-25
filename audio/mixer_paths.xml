@@ -1,8 +1,8 @@
 <mixer>
 <!--
 INOUT_MAP {
-  <ctl name="Earpiece", "Builtin Mic", "Back Mic" />
-  <ctl name="Speaker", "Back Mic", "Third Mic" />
+  <ctl name="Earpiece", "Builtin Mic" />
+  <ctl name="Speaker", "Builtin Mic" />
   <ctl name="Headset Out", "Headset In" />
   <ctl name="Headphone", "Builtin Mic" />
   <ctl name="SCO Headset Out", "SCO Headset In" />
@@ -32,7 +32,7 @@ INPUT_CHANNEL_MAP {
   <ctl name="SPKOUTR NG SPKOUTR Switch" value="0" />
   <ctl name="SPKDAT1L NG SPKDAT1L Switch" value="0" />
   <ctl name="SPKDAT1R NG SPKDAT1R Switch" value="0" />
-  <ctl name="Noise Gate Threshold Volume" value="0" />
+  <ctl name="Noise Gate Threshold Volume" value="3" />
 
   <!-- Analog output AMP -->
   <!-- AP Side is mixed to Input 1 of each out mixer -->
@@ -41,9 +41,9 @@ INPUT_CHANNEL_MAP {
   <ctl name="EPOUT Input 2" value="AIF1RX2" />
   <ctl name="EPOUT Digital Switch" value="1" />
 
-  <!-- SPK(Mono) -->
+  <!-- SPK(Stereo) -->
   <ctl name="SPKOUTL Input 1" value="AIF1RX1" />
-  <ctl name="SPKOUTL Input 2" value="AIF1RX2" />
+  <ctl name="SPKOUTR Input 1" value="AIF1RX2" />
   <ctl name="Speaker Digital Switch" value="1" />
 
   <!-- HP(stereo) -->
@@ -67,6 +67,7 @@ INPUT_CHANNEL_MAP {
 
   <!-- CP->SPK -->
   <ctl name="SPKOUTL Input 3" value="None" />
+  <ctl name="SPKOUTR Input 3" value="None" />
 
   <!-- CP->HP -->
   <ctl name="HPOUT1L Input 2" value="None" />
@@ -107,8 +108,8 @@ INPUT_CHANNEL_MAP {
   <ctl name="AIF1TX2 Input 2" value="ASRC2R" />
 
   <!-- LHPF1 & 2 filter -->
-  <ctl name="LHPF1 COEFF FILTER" value="130Hz" />
-  <ctl name="LHPF2 COEFF FILTER" value="130Hz" />
+  <ctl name="LHPF1 COEFF FILTER" value="64Hz" />
+  <ctl name="LHPF2 COEFF FILTER" value="64Hz" />
 
   <!-- common digital volume -->
   <!-- don't change this common volume -->
@@ -160,6 +161,7 @@ INPUT_CHANNEL_MAP {
   <ctl name="AIF3TX2 Input 2 Volume" value="32" />
   <ctl name="AIF3TX2 Input 3 Volume" value="32" />
   <ctl name="AIF3TX2 Input 4 Volume" value="32" />
+  <ctl name="Speaker Digital Volume" value="122" />
 
   <ctl name="Input Ramp Up" value="8ms/6dB" />
 
@@ -263,7 +265,7 @@ INPUT_CHANNEL_MAP {
     <ctl name="HPOUT1L Input 3" value="None" />
     <ctl name="HPOUT1R Input 3" value="None" />
     <ctl name="LHPF1 Input 1" value="IN1R" />
-    <ctl name="IN1R Volume" value="30" />
+    <ctl name="IN1R Volume" value="21" />
     <ctl name="IN1R Digital Volume" value="150" />
   </path>
 
@@ -346,7 +348,6 @@ INPUT_CHANNEL_MAP {
       <path name="channel-stereo" />
       <path name="aif2-stereo-mic" />
       <path name="builtin-mic" />
-      <path name="back-mic" />
   </path>
 
   <path name="voice-headset-mic">
@@ -362,9 +363,10 @@ INPUT_CHANNEL_MAP {
   </path>
 
   <path name="media-second-mic">
-      <path name="channel-right" />
+      <path name="channel-left" />
       <path name="aif2-stereo-mic" />
-      <path name="back-mic" />
+      <path name="builtin-mic" />
+      <ctl name="IN1L Volume" value="25" />
   </path>
 
   <path name="media-headset-mic">
@@ -377,6 +379,8 @@ INPUT_CHANNEL_MAP {
       <path name="channel-left" />
       <path name="aif2-stereo-mic" />
       <path name="builtin-mic" />
+      <ctl name="IN1L Volume" value="27" />
+      <ctl name="IN1L Digital Volume" value="152" />
   </path>
 
   <path name="communication-main-mic">

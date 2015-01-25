@@ -54,9 +54,8 @@ PRODUCT_COPY_FILES += \
         vendor/cm/prebuilt/common/bootanimation/1600.zip:system/media/bootanimation.zip
     
 # Camera
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
     camera.universal5420 \
-    libexynoscamera \
     libhwjpeg
     
 # Torch

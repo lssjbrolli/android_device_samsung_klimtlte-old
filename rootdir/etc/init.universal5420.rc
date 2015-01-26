@@ -383,7 +383,6 @@ on fs
     mkdir /persdata/absolute 0750 system system 
       
     wait /dev/block/platform/dw_mmc.0/by-name/PERSDATA 
-    # check_fs /dev/block/platform/dw_mmc.0/by-name/PERSDATA ext4 
     mount ext4 /dev/block/platform/dw_mmc.0/by-name/PERSDATA /persdata/absolute nosuid nodev barrier=1 
       
     chown system system /persdata 
@@ -464,6 +463,17 @@ on fs
     #chown system radio /sys/class/camera/rear/isp_core
     chown system radio /sys/class/camera/front/front_camfw
     chown system radio /sys/class/camera/front/front_camtype
+    
+# MobiCore startup
+service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF000000000000000000000001.drbin -r /system/app/mcRegistry/ffffffffd0000000000000000000000a.tlbin
+    class core
+    user system
+    group system
+
+service sensorservice /system/bin/sensorservice
+    class main
+    user system
+    group input
 
 # virtual sdcard daemon running as media_rw (1023)
 service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated

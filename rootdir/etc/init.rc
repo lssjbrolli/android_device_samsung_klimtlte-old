@@ -594,7 +594,6 @@ service servicemanager /system/bin/servicemanager
     onrestart restart media
     onrestart restart surfaceflinger
     onrestart restart drm
-    onrestart restart sensorservice
 
 service vold /system/bin/vold
     class core
@@ -639,7 +638,6 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
     onrestart write /sys/power/state on
     onrestart restart media
     onrestart restart netd
-    onrestart restart sensorservice
 
 service sec-sh /system/bin/sh /system/bin/init.sec.boot.sh
     class main
@@ -744,17 +742,6 @@ on property:init.svc.bootanim=stopped
     restorecon /data/media
     restorecon /data/media/obb
     start auditd
-
-# MobiCore startup
-service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF000000000000000000000001.drbin -r /system/app/mcRegistry/ffffffffd0000000000000000000000a.tlbin
-    class core
-    user system
-    group system
-
-service sensorservice /system/bin/sensorservice
-    class main
-    user system
-    group input
 
 # for Bluetooth Tethering
 service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL

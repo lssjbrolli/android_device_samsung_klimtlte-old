@@ -470,11 +470,6 @@ service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF0000000000000
     user system
     group system
 
-service sensorservice /system/bin/sensorservice
-    class main
-    user system
-    group input
-
 # virtual sdcard daemon running as media_rw (1023)
 service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start

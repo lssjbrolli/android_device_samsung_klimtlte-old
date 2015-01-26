@@ -236,11 +236,6 @@ INPUT_CHANNEL_MAP {
     <ctl name="HDMI Switch" value="1" />
   </path>
 
-  <path name="aif2-stereo-mic">
-    <ctl name="AIF2TX1 Input 1" value="ASRC1L" />
-    <ctl name="AIF2TX2 Input 1" value="ASRC1R" />
-  </path>
-
   <path name="builtin-mic">
     <ctl name="Main Mic Switch" value="1" />
     <ctl name="MICBIAS Mode" value="BIAS2ON" />
@@ -353,19 +348,16 @@ INPUT_CHANNEL_MAP {
 
   <path name="voice-main-mic">
       <path name="channel-stereo" />
-      <path name="aif2-stereo-mic" />
       <path name="builtin-mic" />
   </path>
 
   <path name="voice-headset-mic">
       <path name="channel-left" />
-      <path name="aif2-stereo-mic" />
       <path name="headset-in" />
   </path>
 
   <path name="media-main-mic">
       <path name="channel-left" />
-      <path name="aif2-stereo-mic" />
       <path name="builtin-mic" />
       <ctl name="IN1L Volume" value="27" />
       <ctl name="IN1L Digital Volume" value="152" />
@@ -373,20 +365,17 @@ INPUT_CHANNEL_MAP {
 
   <path name="media-second-mic">
       <path name="channel-left" />
-      <path name="aif2-stereo-mic" />
       <path name="builtin-mic" />
       <ctl name="IN1L Volume" value="25" />
   </path>
 
   <path name="media-headset-mic">
       <path name="channel-left" />
-      <path name="aif2-stereo-mic" />
       <path name="headset-in" />
   </path>
 
   <path name="voice-rec-main-mic">
       <path name="channel-left" />
-      <path name="aif2-stereo-mic" />
       <path name="builtin-mic" />
       <ctl name="IN1L Volume" value="27" />
       <ctl name="IN1L Digital Volume" value="152" />
@@ -394,7 +383,6 @@ INPUT_CHANNEL_MAP {
 
   <path name="communication-main-mic">
       <path name="channel-left" />
-      <path name="aif2-stereo-mic" />
       <path name="builtin-mic" />
   </path>
 
@@ -405,13 +393,11 @@ INPUT_CHANNEL_MAP {
 
   <path name="voice-rec-headset-mic">
       <path name="channel-left" />
-      <path name="aif2-stereo-mic" />
       <path name="headset-in" />
   </path>
 
   <path name="communication-headset-mic">
       <path name="channel-left" />
-      <path name="aif2-stereo-mic" />
       <path name="headset-in" />
   </path>
 

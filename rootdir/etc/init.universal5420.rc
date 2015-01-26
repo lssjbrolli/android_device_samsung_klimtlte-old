@@ -5,10 +5,8 @@ on init
 
     # Set permissions for persist partition
     mkdir /persist 0771 system system
-    mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /mnt/shell/container 0700 system system
     mkdir /storage 0550 system sdcard_r
-    mkdir /storage/emulated 0555 root root
 
     #Internal storage directories
     mkdir /mnt/shell/emulated 0700 shell shell
@@ -474,11 +472,11 @@ service mobicore /system/bin/mcDriverDaemon -r /system/app/FFFFFFFF0000000000000
 service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start
 
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
     class late_start
     disabled
 
-#service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbdisk /storage/usbdisk
+#service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk /storage/usbdisk
     class late_start
     disabled
 

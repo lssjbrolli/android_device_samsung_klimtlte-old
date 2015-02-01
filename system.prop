@@ -9,12 +9,6 @@ ro.opengles.version=196608
 # Wifi
 wifi.interface=wlan0
 
-#root
-ro.secure=0
-ro.allow.mock.location=1
-ro.debuggable=1
-ro.adb.secure=0
-
 # Radio
 ro.telephony.ril_class=KlimtRIL
 ro.telephony.ril.v3=newDriverCall,newDialCode

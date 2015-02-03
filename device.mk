@@ -43,9 +43,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_effects.conf:system/etc/audio_effects.conf
 
 # Boot animation
-TARGET_SCREEN_HEIGHT := 2560
-TARGET_SCREEN_WIDTH := 1600
-PRODUCT_COPY_FILES += \
+#PRODUCT_COPY_FILES += \
         vendor/cm/prebuilt/common/bootanimation/1600.zip:system/media/bootanimation.zip
     
 # Camera
@@ -122,11 +120,6 @@ PRODUCT_PACKAGES += \
     libOMX.Exynos.VP8.Decoder \
     libOMX.Exynos.VP8.Encoder \
     libstagefrighthw
-    
-# System properties
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opengles.version=131072 \
-    wifi.interface=wlan0
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -143,7 +136,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:system/etc/permissions/android.hardware.sensor.stepdetector.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:system/etc/permissions/android.hardware.sensor.stepcounter.xml \
-    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
+    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
@@ -210,7 +203,7 @@ PRODUCT_PACKAGES += \
     
 # Lights
 PRODUCT_PACKAGES += \
-    lights.universal5420
+    lights.universal5420 
 
 # Wifi
 PRODUCT_COPY_FILES += \
@@ -221,6 +214,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libnetcmdiface \
     macloader
+    
+# Memory Tracker HAL
+PRODUCT_PACKAGES += \
+    memtrack.exynos5
 
 # call dalvik heap config
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk)

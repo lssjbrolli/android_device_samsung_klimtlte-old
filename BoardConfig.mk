@@ -69,7 +69,7 @@ BOARD_KERNEL_PAGESIZE := 2048
 TARGET_KERNEL_CONFIG := klimtlte_00_defconfig
 TARGET_KERNEL_SOURCE := kernel/samsung/klimtlte
 #TARGET_PREBUILT_KERNEL := device/samsung/klimtlte/kernel
-BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive
+#BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive
 
 # Battery
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
@@ -87,7 +87,7 @@ BOARD_EGL_SYSTEMUI_PBSIZE_HACK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
 BOARD_USE_BGRA_8888 := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 5
-OVERRIDE_RS_DRIVER := libRSDriverArm.so
+#OVERRIDE_RS_DRIVER := libRSDriverArm.so
 
 # HWCServices
 BOARD_USES_HWC_SERVICES := true

@@ -27,11 +27,8 @@ on early-init
     mkdir /mnt 0775 root system
 
     # Allow system UID to setenforce and set booleans.
-    chown system system /selinux/enforce
     chown system system /sys/fs/selinux/enforce
-    chown -R system system /selinux/booleans
     chown -R system system /sys/fs/selinux/booleans
-    chown system system /selinux/commit_pending_bools
     chown system system /sys/fs/selinux/commit_pending_bools
 
 on init
@@ -39,11 +36,6 @@ on init
     sysclktz 0
 
     loglevel 3
-    
-    setprop ro.radio.noril no
-    setprop hw.nophone false
-    setenforce 0
-    setprop ro.boot.selinux 0
     
     # for audit message
     chown system system /proc/avc_msg

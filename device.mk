@@ -205,6 +205,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     lights.universal5420 
 
+# Power
+PRODUCT_PACKAGES += \
+	power.universal5420
+
 # Wifi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
@@ -227,3 +231,5 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-hwui
 
 # call the proprietary setup
 $(call inherit-product-if-exists, vendor/samsung/klimtlte/klimtlte-vendor.mk)
+
+$(call inherit-product-if-exists, hardware/samsung_slsi/exynos5/libmemtrack/Android.mk)

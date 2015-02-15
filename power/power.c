@@ -127,10 +127,7 @@ static void power_init(struct power_module *module)
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/single_exit_time",
 		"99000");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/io_is_busy",
-		"1");
-    
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/param_index",
-		"0");
+                "1");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/timer_rate",
                 "20000");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/timer_slack",
@@ -138,63 +135,15 @@ static void power_init(struct power_module *module)
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/min_sample_time",
                 "40000");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq",
-                "600000");
+                "1000000");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load",
-                "99");
+                "90");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/target_loads",
 		"70 600000:70 800000:75 1500000:80 1700000:90");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay",
                 "20000 1000000:80000 1200000:100000 1700000:20000");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration",
                 BOOST_PULSE_DURATION_STR);
-    
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/param_index",
-		"1");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay",
-                "19000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load",
-                "95");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq",
-                "650000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/min_sample_time",
-                "59000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/target_loads",
-		"58 800000:65 1400000:70 1700000:80");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/timer_rate",
-                "20000");
-    
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/param_index",
-		"2");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay",
-                "19000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load",
-                "90");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq",
-                "1300000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/min_sample_time",
-                "79000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/target_loads",
-		"55 800000:65 1500000:700");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/timer_rate",
-                "20000");
-    
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/param_index",
-		"3");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay",
-                "19000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load",
-                "85");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq",
-                "1400000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/min_sample_time",
-                "99000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/target_loads",
-		"50 1200000:60 1600000:70");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/timer_rate",
-                "20000");
-    
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/param_index",
-		"0");
 
     init_touchscreen_power_path(klimtlte);
 }

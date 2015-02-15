@@ -27,7 +27,7 @@ lib/libarcsoft_vdoinvideo.so
 # Graphics
 vendor/lib/egl/libGLES_mali.so
 vendor/lib/libmalicore.bc
-#vendor/lib/libRSDriverArm.so
+vendor/lib/libRSDriverArm.so
 
 # GPS
 bin/gpsd
